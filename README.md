@@ -31,32 +31,29 @@ Notes: parameter keys are throttled (changes apply at ~0.1s intervals) and HUD v
 
 Flow map visual samples (captured with `flow_map`):
 
-<div>
-  <figure style="display:inline-block;margin:8px;text-align:center">
-    <img src="renders/flow_map_20260118_150920.png" alt="flow_map 150920" width="512"/>
-    <figcaption>Each point in the field origin cube is iterated over allowing you to vizualize the attractor</figcaption>
-  </figure>
-  <figure style="display:inline-block;margin:8px;text-align:center">
-    <img src="renders/flow_map_20260118_150957.png" alt="flow_map 150957" width="512"/>
-    <figcaption>You can zoom in / out & move the camera around</figcaption>
-  </figure>
-  <figure style="display:inline-block;margin:8px;text-align:center">
-    <img src="renders/flow_map_20260118_151007.png" alt="flow_map 151007" width="512"/>
-    <figcaption>You can move & scale the field origin cube</figcaption>
-  </figure>
-  <figure style="display:inline-block;margin:8px;text-align:center">
-    <img src="renders/flow_map_20260118_151011.png" alt="flow_map 151011" width="512"/>
-    <figcaption>You can change grid resolution & number of iterations</figcaption>
-  </figure>
-  <figure style="display:inline-block;margin:8px;text-align:center">
-    <img src="renders/flow_map_20260118_151020.png" alt="flow_map 151020" width="512"/>
-    <figcaption>You can change Henon's a & b parameters</figcaption>
-  </figure>
-  <figure style="display:inline-block;margin:8px;text-align:center">
-    <img src="renders/flow_map_20260118_151029.png" alt="flow_map 151029" width="512"/>
-    <figcaption>Colors are based on each points rate of change</figcaption>
-  </figure>
-</div>
+![flow_map 150920](renders/flow_map_20260118_150920.png)
+
+Each point in the field origin cube is iterated over allowing you to vizualize the attractor.
+
+![flow_map 150957](renders/flow_map_20260118_150957.png)
+
+You can zoom in / out & move the camera around.
+
+![flow_map 151007](renders/flow_map_20260118_151007.png)
+
+You can move & scale the field origin cube.
+
+![flow_map 151011](renders/flow_map_20260118_151011.png)
+
+You can change grid resolution & number of iterations.
+
+![flow_map 151020](renders/flow_map_20260118_151020.png)
+
+You can change Henon's a & b parameters.
+
+![flow_map 151029](renders/flow_map_20260118_151029.png)
+
+Colors are based on each point's rate of change.
 
 
 ## PLY Exporter
