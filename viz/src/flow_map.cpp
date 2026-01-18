@@ -7,16 +7,22 @@
 #include <thread>
 #include <chrono>
 #include <algorithm>
+#include <memory>
 
 #include "../inc/utils.h"
+#include "../inc/map.h"
+#include "../inc/henon_map.h"
+#include "../inc/lorenz_map.h"
 
 
-class HenonField {
+class FieldVisualizer {
 public:
-    float a = 1.4f, b = 0.1f;
+    std::unique_ptr<IteratedMap> map;
     int resolution = 10, iterations = 15;
     float range = 1.0f;
     float cx = 0, cy = 0, cz = 0;
+
+    FieldVisualizer(std::unique_ptr<IteratedMap> m) : map(std::move(m)) {}
 
     void draw() {
         float step = (range * 2.0f) / (float)(resolution > 1 ? resolution - 1 : 1);
@@ -32,15 +38,13 @@ public:
 
                     glBegin(GL_LINE_STRIP);
                     for (int n = 0; n < iterations; n++) {
-                        float nx = a - (y * y) - (b * z);
-                        float ny = x;
-                        float nz = y;
-                        float dist = sqrt(pow(nx-x,2) + pow(ny-y,2) + pow(nz-z,2));
+                        float px = x, py = y, pz = z;
+                        map->iterate(x, y, z);
+                        float dist = sqrt(pow(x-px,2) + pow(y-py,2) + pow(z-pz,2));
                         float t = std::min(dist / 1.5f, 1.0f);
                         glColor4f(1.0f - t, 0.2f, t, 0.6f);
-                        glVertex3f(x, y, z);
-                        x = nx; y = ny; z = nz;
-                        if (std::abs(x) > 10.0f) break;
+                        glVertex3f(px, py, pz);
+                        if (map->hasEscaped(x, y, z)) break;
                     }
                     glEnd();
                 }
@@ -57,16 +61,40 @@ public:
 };
 
 
-
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     if (!glfwInit()) return -1;
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Henon Viz", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Equation Viz", NULL, NULL);
     glfwMakeContextCurrent(window);
     glEnable(GL_DEPTH_TEST);
 
     Camera cam;
-    HenonField field;
+    
+    // Parse command-line argument for map selection
+    std::string mapName = "henon";  // Default
+    if (argc > 1) {
+        mapName = argv[1];
+        if (mapName == "--help" || mapName == "-h") {
+            printUsage(argv[0]);
+            glfwTerminate();
+            return 0;
+        }
+    }
+    
+    std::unique_ptr<IteratedMap> map;
+    if (mapName == "henon" || mapName == "henon_map") {
+        map = std::make_unique<HenonMap>();
+    } else if (mapName == "lorenz" || mapName == "lorenz_map") {
+        map = std::make_unique<LorenzMap>();
+    } else {
+        map = std::make_unique<HenonMap>();  // Default
+    }
+    
+    FieldVisualizer field(std::move(map));
+    // Initialize field parameters from map defaults
+    field.resolution = field.map->getDefaultResolution();
+    field.iterations = field.map->getDefaultIterations();
+    field.range = field.map->getDefaultRange();
     double lastUpdate = 0;
 
     while (!glfwWindowShouldClose(window)) {
@@ -95,18 +123,18 @@ int main(int argc, char** argv) {
             if (ax >= ay && ax >= az) {
                 if (glfwGetKey(window, GLFW_KEY_UP)) field.cy += speed;
                 if (glfwGetKey(window, GLFW_KEY_DOWN)) field.cy -= speed;
-                if (glfwGetKey(window, GLFW_KEY_LEFT)) field.cz += speed;
-                if (glfwGetKey(window, GLFW_KEY_RIGHT)) field.cz -= speed;
+                if (glfwGetKey(window, GLFW_KEY_RIGHT)) field.cz += speed;
+                if (glfwGetKey(window, GLFW_KEY_LEFT)) field.cz -= speed;
             } else if (ay >= ax && ay >= az) {
                 if (glfwGetKey(window, GLFW_KEY_UP)) field.cx += speed;
                 if (glfwGetKey(window, GLFW_KEY_DOWN)) field.cx -= speed;
-                if (glfwGetKey(window, GLFW_KEY_LEFT)) field.cz += speed;
-                if (glfwGetKey(window, GLFW_KEY_RIGHT)) field.cz -= speed;
+                if (glfwGetKey(window, GLFW_KEY_RIGHT)) field.cz += speed;
+                if (glfwGetKey(window, GLFW_KEY_LEFT)) field.cz -= speed;
             } else {
                 if (glfwGetKey(window, GLFW_KEY_UP)) field.cy += speed;
                 if (glfwGetKey(window, GLFW_KEY_DOWN)) field.cy -= speed;
-                if (glfwGetKey(window, GLFW_KEY_LEFT)) field.cx += speed;
-                if (glfwGetKey(window, GLFW_KEY_RIGHT)) field.cx -= speed;
+                if (glfwGetKey(window, GLFW_KEY_RIGHT)) field.cx += speed;
+                if (glfwGetKey(window, GLFW_KEY_LEFT)) field.cx -= speed;
             }
         }
 
@@ -114,8 +142,11 @@ int main(int argc, char** argv) {
         if (now - lastUpdate > 0.1) {
             if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) { if(ctrl) field.resolution--; else field.resolution++; }
             if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) { if(ctrl) field.iterations--; else field.iterations++; }
-            if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) { if(ctrl) field.a -= 0.01f; else field.a += 0.01f; }
-            if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) { if(ctrl) field.b -= 0.01f; else field.b += 0.01f; }
+            // Map-specific parameters (cast to access HenonMap)
+            if (auto* henonMap = dynamic_cast<HenonMap*>(field.map.get())) {
+                if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) { if(ctrl) henonMap->a -= 0.01f; else henonMap->a += 0.01f; }
+                if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) { if(ctrl) henonMap->b -= 0.01f; else henonMap->b += 0.01f; }
+            }
             field.resolution = std::clamp(field.resolution, 1, 40);
             field.iterations = std::clamp(field.iterations, 1, 300);
             lastUpdate = now;
@@ -144,12 +175,17 @@ int main(int argc, char** argv) {
 
         // HUD
         float sy = 690, ls = 20;
-        drawText(20, sy, "Resolution: " + std::to_string(field.resolution));
-        drawText(20, sy-ls, "Iterations: " + std::to_string(field.iterations));
-        drawText(20, sy-2*ls, "Origin: [" + std::to_string(field.cx).substr(0,5) + "," + std::to_string(field.cy).substr(0,5) + "," + std::to_string(field.cz).substr(0,5) + "]");
-        drawText(20, sy-3*ls, "Grid Size: " + std::to_string(field.range * 2.0f).substr(0,5));
-        drawText(20, sy-4*ls, "Param A: " + std::to_string(field.a).substr(0,6));
-        drawText(20, sy-5*ls, "Param B: " + std::to_string(field.b).substr(0,6));
+        drawText(20, sy, "Map: " + std::string(field.map->getName()));
+        drawText(20, sy-ls, "Resolution: " + std::to_string(field.resolution));
+        drawText(20, sy-2*ls, "Iterations: " + std::to_string(field.iterations));
+        drawText(20, sy-3*ls, "Origin: [" + std::to_string(field.cx).substr(0,5) + "," + std::to_string(field.cy).substr(0,5) + "," + std::to_string(field.cz).substr(0,5) + "]");
+        drawText(20, sy-4*ls, "Grid Size: " + std::to_string(field.range * 2.0f).substr(0,5));
+        
+        // Display map-specific parameters
+        if (auto* henonMap = dynamic_cast<HenonMap*>(field.map.get())) {
+            drawText(20, sy-5*ls, "Param A: " + std::to_string(henonMap->a).substr(0,6));
+            drawText(20, sy-6*ls, "Param B: " + std::to_string(henonMap->b).substr(0,6));
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();

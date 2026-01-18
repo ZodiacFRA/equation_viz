@@ -22,4 +22,7 @@ void drawText(float x, float y, std::string text);
 // Save framebuffer to PNG file in renders/ directory with timestamp
 void save_screenshot(GLFWwindow* window);
 
+// Print command-line usage instructions
+void printUsage(const char* progName);
+
 #endif // UTILS_H

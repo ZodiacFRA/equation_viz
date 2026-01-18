@@ -78,3 +78,10 @@ void save_screenshot(GLFWwindow* window) {
         printf("Failed to save screenshot.\n");
     }
 }
+
+void printUsage(const char* progName) {
+    printf("Usage: %s [map_name]\n", progName);
+    printf("\nAvailable maps:\n");
+    printf("  henon     - Henon map (default)\n");
+    printf("  lorenz    - Lorenz attractor\n");
+}
