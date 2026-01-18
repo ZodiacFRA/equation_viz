@@ -1,12 +1,13 @@
-#include "../inc/utils.h"
-#include <GL/freeglut.h>
-#include <GL/glu.h>
 #include <cmath>
 #include <vector>
 #include <cstdio>
 #include <ctime>
 #include <algorithm>
 
+#include <GL/freeglut.h>
+#include <GL/glu.h>
+
+#include "../inc/utils.hpp"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../inc/stb_image_write.h"
 

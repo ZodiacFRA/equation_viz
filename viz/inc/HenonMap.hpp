@@ -1,8 +1,7 @@
-#ifndef HENON_MAP_H
-#define HENON_MAP_H
-
-#include "map.h"
+#pragma once
 #include <string>
+
+#include "IteratedMap.hpp"
 
 // Henon map: x_{n+1} = a - y_n^2 - b*z_n, y_{n+1} = x_n, z_{n+1} = y_n
 class HenonMap : public IteratedMap {
@@ -41,5 +40,3 @@ public:
     int getDefaultResolution() const override { return 10; }
     int getDefaultIterations() const override { return 15; }
 };
-
-#endif // HENON_MAP_H

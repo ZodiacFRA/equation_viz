@@ -1,5 +1,4 @@
-#ifndef MAP_H
-#define MAP_H
+#pragma once
 
 #include <cmath>
 #include <array>
@@ -36,5 +35,3 @@ public:
     virtual int getDefaultResolution() const { return 10; }
     virtual int getDefaultIterations() const { return 15; }
 };
-
-#endif // MAP_H

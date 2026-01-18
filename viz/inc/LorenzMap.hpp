@@ -1,8 +1,9 @@
-#ifndef LORENZ_MAP_H
-#define LORENZ_MAP_H
+#pragma once
 
-#include "map.h"
 #include <string>
+
+#include "IteratedMap.hpp"
+
 
 // Lorenz attractor: dx/dt = σ(y-x), dy/dt = x(ρ-z)-y, dz/dt = xy-βz
 // Discretized iteration (Euler method with adaptive sub-stepping for accuracy)
@@ -57,4 +58,3 @@ public:
     int getDefaultIterations() const override { return 100; }
 };
 
-#endif // LORENZ_MAP_H

@@ -1,8 +1,8 @@
-#ifndef UTILS_H
-#define UTILS_H
+#pragma once
+
+#include <string>
 
 #include <GLFW/glfw3.h>
-#include <string>
 
 // Camera class: spherical coordinate camera for 3D visualization
 class Camera {
@@ -24,5 +24,3 @@ void save_screenshot(GLFWwindow* window);
 
 // Print command-line usage instructions
 void printUsage(const char* progName);
-
-#endif // UTILS_H

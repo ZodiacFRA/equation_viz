@@ -50,16 +50,18 @@ add_executable(henon_ply_creator
 )
 
 # 2. Flow map field visualizer
-add_executable(flow_map
-    viz/src/flow_map.cpp
+add_executable(FieldVisualizer
+    viz/src/FieldVisualizer.cpp
     viz/src/utils.cpp
+    viz/src/main.cpp
+
 )
-target_link_libraries(flow_map
+target_link_libraries(FieldVisualizer
     PRIVATE ${GLFW3_LIBRARIES} OpenGL::OpenGL ${GLU_LIBRARY} GLUT::GLUT pthread dl m
 )
 
 # Set output directory for all targets
-set_target_properties(henon_ply_creator flow_map
+set_target_properties(henon_ply_creator FieldVisualizer
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
