@@ -32,16 +32,24 @@ Notes: parameter keys are throttled (changes apply at ~0.1s intervals) and HUD v
 
 
 ### Lorenz Attractor
-The classic "butterfly" attractor, visualized from a field of starting points.
+The classic "butterfly" attractor, visualized from a field of starting points
 
 ![Lorenz Attractor](renders/flow_map_20260118_164917.png)
+
+By moving and scaling the origin field you can see how it goes only to a single attractor
+
+![Lorenz Attractor](renders/flow_map_20260118_182948.png)
+
+Here you can see how part of the origin field splits and go towards each attractor
+
+![Lorenz Attractor](renders/flow_map_20260118_183008.png)
 
 
 ### Henon Attractor
 
 ![flow_map 150920](renders/flow_map_20260118_150920.png)
 
-Each point in the field origin cube is iterated over allowing you to vizualize the attractor.
+Each point in the field origin cube is iterated over allowing you to vizualize the attractor
 
 ![flow_map 150957](renders/flow_map_20260118_150957.png)
 
@@ -49,7 +57,7 @@ You can zoom in / out & move the camera around.
 
 ![flow_map 151007](renders/flow_map_20260118_151007.png)
 
-You can move & scale the field origin cube.
+You can move & scale the field origin cube
 
 ![flow_map 151011](renders/flow_map_20260118_151011.png)
 
