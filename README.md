@@ -2,18 +2,13 @@
 
 This repository provides two workflows for exploring a Henon-like iterated map.
 
-Quick build commands (Linux)
-```bash
-g++ -std=c++17 -O2 blender_viz/henon_ply_creator.cpp -o henon_ply_creator
-g++ -std=c++17 -O2 viz/single_point_henon.cpp -o single_point_henon -lglfw -lGL -lGLU -lglut -lpthread -ldl -lm
-g++ -std=c++17 -O2 viz/flow_map.cpp -o flow_map -I inc -lglfw -lGL -lGLU -lglut -lpthread -ldl -lm
-```
-
 ## Real-time visualizers
 
 - The `viz/` directory contains immediate-mode OpenGL applications for interactive exploration and debugging (live, not for export):
-  - `viz/single_point.cpp`: draws a single orbit/trajectory as a line strip from a seed point. Useful for studying individual orbits and quick parameter tweaks.
-  - `viz/flow_map.cpp`: draws trajectories/streamlines, includes a `Camera` and `HenonField` abstraction, axis-locked movement, control-modified zoom/scale, and throttled parameter updates for smoother interaction.
+  - `viz/src/single_point_henon.cpp`: draws a single orbit/trajectory as a line strip from a seed point. Useful for studying individual orbits and quick parameter tweaks.
+  - `viz/src/flow_map.cpp`: draws trajectories/streamlines, includes a `Camera` and `HenonField` abstraction, axis-locked movement, control-modified zoom/scale, and throttled parameter updates for smoother interaction.
+  - `viz/src/utils.cpp`: shared rendering utilities (Camera class, grid rendering, text rendering, screenshot saving)
+  - `viz/inc/`: headers for utilities and dependencies (stb_image_write.h)
 
 Controls (for `viz/flow_map.cpp`)
 
@@ -63,3 +58,23 @@ Colors are based on each point's rate of change.
 Example exporter output (Blender preview):
 
 ![Blender export preview](renders/blender_viz.png)
+
+
+## Building
+
+### Requirements
+- C++17 compiler
+- CMake 3.10+
+- GLFW3, OpenGL, GLUT (for visualizers)
+
+### Build
+```bash
+cmake .
+make        # Build all targets to build/bin/
+make clean  # Remove build directory
+```
+
+Executables:
+- `build/bin/flow_map` - Interactive 3D field visualizer
+- `build/bin/single_point_henon` - Single trajectory tracer
+- `build/bin/henon_ply_creator` - PLY export utility

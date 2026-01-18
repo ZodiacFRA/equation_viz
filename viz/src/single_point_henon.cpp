@@ -5,6 +5,8 @@
 #include <cmath>
 #include <string>
 
+#include "../inc/utils.h"
+
 const int MAX_POINTS = 100;
 float a = 1.4f;
 float b = 0.1f;
@@ -14,10 +16,7 @@ bool isBroken = false;
 
 float deltaPos = 0.000001f;
 
-// Camera
-float cameraTheta = 0.0f;    
-float cameraPhi = 1.5f;      
-float cameraRadius = 6.0f;   
+Camera cam;
 
 struct Point { float x, y, z; };
 std::vector<Point> points(MAX_POINTS);
@@ -63,21 +62,6 @@ void drawGrid(float size, int divisions) {
     glEnd();
 }
 
-void drawText(float x, float y, std::string text) {
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix(); glLoadIdentity();
-    gluOrtho2D(0, 1280, 0, 720);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix(); glLoadIdentity();
-    glColor3f(0.8f, 0.8f, 0.8f);
-    glRasterPos2f(x, y);
-    for (char c : text) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, c);
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-}
-
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     if (!glfwInit()) return -1;
@@ -85,15 +69,19 @@ int main(int argc, char** argv) {
     if (!window) { glfwTerminate(); return -1; }
     glfwMakeContextCurrent(window);
     glEnable(GL_DEPTH_TEST);
+    
+    cam.theta = 0.0f;
+    cam.phi = 1.5f;
+    cam.radius = 6.0f;
 
     while (!glfwWindowShouldClose(window)) {
         float oldA = a, oldB = b, oldX = startX, oldY = startY, oldZ = startZ;
 
         // Camera Orbit
-        if (isPressed(window, GLFW_KEY_LEFT))  cameraTheta -= 0.04f;
-        if (isPressed(window, GLFW_KEY_RIGHT)) cameraTheta += 0.04f;
-        if (isPressed(window, GLFW_KEY_UP))    cameraPhi -= 0.04f;
-        if (isPressed(window, GLFW_KEY_DOWN))  cameraPhi += 0.04f;
+        if (isPressed(window, GLFW_KEY_LEFT))  cam.theta -= 0.04f;
+        if (isPressed(window, GLFW_KEY_RIGHT)) cam.theta += 0.04f;
+        if (isPressed(window, GLFW_KEY_UP))    cam.phi -= 0.04f;
+        if (isPressed(window, GLFW_KEY_DOWN))  cam.phi += 0.04f;
 
         // Params (U/I, J/K)
         if (isPressed(window, GLFW_KEY_U)) a -= 0.002f;
@@ -137,10 +125,7 @@ int main(int argc, char** argv) {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         
-        float camX = cameraRadius * sin(cameraPhi) * cos(cameraTheta);
-        float camY = cameraRadius * cos(cameraPhi);
-        float camZ = cameraRadius * sin(cameraPhi) * sin(cameraTheta);
-        gluLookAt(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
+        cam.apply();
 
         drawGrid(5.0f, 10);
 

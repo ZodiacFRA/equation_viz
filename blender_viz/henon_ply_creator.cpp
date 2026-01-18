@@ -40,7 +40,7 @@ int main() {
     }
 
     // Write to PLY file
-    std::ofstream outFile("./renders/henon_3d.ply");
+    std::ofstream outFile("henon_3d.ply");
     if (!outFile.is_open()) {
         std::cerr << "Error: Could not open file for writing." << std::endl;
         return 1;
