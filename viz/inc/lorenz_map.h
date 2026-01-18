@@ -44,6 +44,10 @@ public:
         return "Lorenz Attractor";
     }
 
+    float getScale() const override {
+        return 30.0f;
+    }
+
     bool hasEscaped(float x, float y, float z) const override {
         // Lorenz attractor stays within a bounded region (~30 units in each dimension)
         return x*x + y*y + z*z > 3000.0f;
@@ -51,7 +55,6 @@ public:
 
     int getDefaultResolution() const override { return 8; }
     int getDefaultIterations() const override { return 100; }
-    float getDefaultRange() const override { return 30.0f; }
 };
 
 #endif // LORENZ_MAP_H

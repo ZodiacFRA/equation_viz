@@ -34,9 +34,12 @@ public:
         return "Henon Map";
     }
 
+    float getScale() const override {
+        return 1.0f;
+    }
+
     int getDefaultResolution() const override { return 10; }
     int getDefaultIterations() const override { return 15; }
-    float getDefaultRange() const override { return 1.0f; }
 };
 
 #endif // HENON_MAP_H

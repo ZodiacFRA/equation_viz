@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <array>
+#include <string>
 
 // Base class for iterated maps (x_{n+1} = f(x_n, y_n, z_n))
 class IteratedMap {
@@ -16,6 +17,9 @@ public:
     virtual bool hasEscaped(float x, float y, float z) const {
         return std::abs(x) > 10.0f;
     }
+
+    // Get scaling factor for visualization
+    virtual float getScale() const = 0;
 
     // Get parameter by name (optional, for generic param handling)
     virtual float getParam(const std::string& name) const {
@@ -31,7 +35,6 @@ public:
     // Visualization parameters (map-specific defaults)
     virtual int getDefaultResolution() const { return 10; }
     virtual int getDefaultIterations() const { return 15; }
-    virtual float getDefaultRange() const { return 1.0f; }
 };
 
 #endif // MAP_H

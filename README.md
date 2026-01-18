@@ -1,16 +1,29 @@
-# Henon Map Visualizations
+# Attractor Visualizations
 
-This repository provides two workflows for exploring a Henon-like iterated map.
+This repository provides tools for exploring strange attractors, including the Hénon map and the Lorenz attractor.
 
-## Real-time visualizers
+## Real-time Visualizer (`flow_map`)
 
-- The `viz/` directory contains immediate-mode OpenGL applications for interactive exploration and debugging (live, not for export):
-  - `viz/src/single_point_henon.cpp`: draws a single orbit/trajectory as a line strip from a seed point. Useful for studying individual orbits and quick parameter tweaks.
-  - `viz/src/flow_map.cpp`: draws trajectories/streamlines, includes a `Camera` and `HenonField` abstraction, axis-locked movement, control-modified zoom/scale, and throttled parameter updates for smoother interaction.
-  - `viz/src/utils.cpp`: shared rendering utilities (Camera class, grid rendering, text rendering, screenshot saving)
-  - `viz/inc/`: headers for utilities and dependencies (stb_image_write.h)
+The main application is an interactive, real-time visualizer for exploring attractor flow fields.
 
-Controls (for `viz/flow_map.cpp`)
+### Features
+- **Multiple Maps**: Supports the Hénon map and Lorenz attractor.
+- **Interactive Camera**: Full orbital camera controls.
+- **Live Parameter Editing**: Interactively modify map parameters and visualization settings (resolution, iterations).
+- **Screenshot Capture**: Save the current view to a PNG file.
+
+### Usage
+The `flow_map` executable can be run with an optional argument to select the map.
+
+```bash
+# Run with the default map (Henon)
+./build/bin/flow_map
+
+# Specify a map to view
+./build/bin/flow_map lorenz
+```
+
+### Controls
 
 | Key(s) | Action | With `Ctrl` |
 |---:|:---|:---|
@@ -18,13 +31,19 @@ Controls (for `viz/flow_map.cpp`)
 | `PageUp` / `PageDown` | Zoom camera in / out | Adjust field grid `range` (scale) |
 | `U` | Increase `field.resolution` (grid samples) | Decrease `field.resolution` |
 | `I` | Increase `field.iterations` (per-sample trajectory length) | Decrease `field.iterations` |
-| `O` | Increase parameter `a` | Decrease `a` |
-| `P` | Increase parameter `b` | Decrease `b` |
+| `O`, `P` | Modify map-specific parameters (e.g., `a` and `b` for Hénon) | Decrease parameter value |
 | `Y` | Save a screenshot (PNG) to `renders/` | N/A |
 
 Notes: parameter keys are throttled (changes apply at ~0.1s intervals) and HUD values are shown on-screen.
 
-Flow map visual samples (captured with `flow_map`):
+
+### Lorenz Attractor
+The classic "butterfly" attractor, visualized from a field of starting points.
+
+![Lorenz Attractor](renders/flow_map_20260118_164917.png)
+
+
+### Henon Attractor
 
 ![flow_map 150920](renders/flow_map_20260118_150920.png)
 
@@ -58,6 +77,7 @@ Colors are based on each point's rate of change.
 Example exporter output (Blender preview):
 
 ![Blender export preview](renders/blender_viz.png)
+
 
 
 ## Building
