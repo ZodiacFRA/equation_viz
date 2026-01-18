@@ -23,9 +23,9 @@ The `flow_map` executable can be run with an optional argument to select the map
 |---:|:---|:---|
 | Arrow keys (← ↑ → ↓) | Rotate camera / orbit view | Axis-locked movement: move field origin cube along dominant axis |
 | `PageUp` / `PageDown` | Zoom camera in / out | Adjust field grid `range` (scale) |
-| `U` | Increase `field.resolution` (grid samples) | Decrease `field.resolution` |
+| `R` | Increase `field.resolution` (grid samples) | Decrease `field.resolution` |
 | `I` | Increase `field.iterations` (per-sample trajectory length) | Decrease `field.iterations` |
-| `O`, `P` | Modify map-specific parameters (e.g., `a` and `b` for Hénon) | Decrease parameter value |
+| `X`, `C`, `V` | Modify map-specific parameters (e.g., `a` and `b` for Hénon) | Decrease parameter value |
 | `Y` | Save a screenshot (PNG) to `renders/` | N/A |
 
 Notes: parameter keys are throttled (changes apply at ~0.1s intervals) and HUD values are shown on-screen.

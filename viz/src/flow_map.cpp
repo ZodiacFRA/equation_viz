@@ -146,12 +146,17 @@ int main(int argc, char** argv) {
 
         // Params Throttling
         if (now - lastUpdate > 0.1) {
-            if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) { if(ctrl) field.resolution--; else field.resolution++; }
+            if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) { if(ctrl) field.resolution--; else field.resolution++; }
             if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) { if(ctrl) field.iterations--; else field.iterations++; }
-            // Map-specific parameters (cast to access HenonMap)
+            // Map-specific parameters
             if (auto* henonMap = dynamic_cast<HenonMap*>(field.map.get())) {
-                if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) { if(ctrl) henonMap->a -= 0.01f; else henonMap->a += 0.01f; }
-                if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) { if(ctrl) henonMap->b -= 0.01f; else henonMap->b += 0.01f; }
+                if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) { if(ctrl) henonMap->a -= 0.01f; else henonMap->a += 0.01f; }
+                if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) { if(ctrl) henonMap->b -= 0.01f; else henonMap->b += 0.01f; }
+            }
+            else if (auto* lorenzMap = dynamic_cast<LorenzMap*>(field.map.get())) {
+                if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) { if(ctrl) lorenzMap->sigma -= 0.1f; else lorenzMap->sigma += 0.1f; }
+                if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) { if(ctrl) lorenzMap->rho -= 0.1f; else lorenzMap->rho += 0.1f; }
+                if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) { if(ctrl) lorenzMap->beta -= 0.1f; else lorenzMap->beta += 0.1f; }
             }
             field.resolution = std::clamp(field.resolution, 1, 40);
             field.iterations = std::clamp(field.iterations, 1, 300);
@@ -191,6 +196,11 @@ int main(int argc, char** argv) {
         if (auto* henonMap = dynamic_cast<HenonMap*>(field.map.get())) {
             drawText(20, sy-5*ls, "Param A: " + std::to_string(henonMap->a).substr(0,6));
             drawText(20, sy-6*ls, "Param B: " + std::to_string(henonMap->b).substr(0,6));
+        }
+        else if (auto* lorenzMap = dynamic_cast<LorenzMap*>(field.map.get())) {
+            drawText(20, sy-5*ls, "Sigma: " + std::to_string(lorenzMap->sigma).substr(0,6));
+            drawText(20, sy-6*ls, "Rho: " + std::to_string(lorenzMap->rho).substr(0,6));
+            drawText(20, sy-7*ls, "Beta: " + std::to_string(lorenzMap->beta).substr(0,6));
         }
 
         glfwSwapBuffers(window);

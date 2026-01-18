@@ -49,16 +49,7 @@ add_executable(henon_ply_creator
     blender_viz/henon_ply_creator.cpp
 )
 
-# 2. Single-point tracer
-add_executable(single_point_henon
-    viz/src/single_point_henon.cpp
-    viz/src/utils.cpp
-)
-target_link_libraries(single_point_henon
-    PRIVATE ${GLFW3_LIBRARIES} OpenGL::OpenGL ${GLU_LIBRARY} GLUT::GLUT pthread dl m
-)
-
-# 3. Flow map field visualizer
+# 2. Flow map field visualizer
 add_executable(flow_map
     viz/src/flow_map.cpp
     viz/src/utils.cpp
@@ -68,7 +59,7 @@ target_link_libraries(flow_map
 )
 
 # Set output directory for all targets
-set_target_properties(henon_ply_creator single_point_henon flow_map
+set_target_properties(henon_ply_creator flow_map
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
