@@ -2,20 +2,11 @@
 
 This repository provides tools for exploring strange attractors, including the Hénon map and the Lorenz attractor.
 
-## Real-time Visualizer (`flow_map`)
+## Real-time Visualizer (`FieldVisualizer`)
 
 The main application is an interactive, real-time visualizer for exploring attractor flow fields.
 
-### Usage
-The `flow_map` executable can be run with an optional argument to select the map.
 
-```bash
-# Run with the default map (Henon)
-./build/bin/flow_map
-
-# Specify a map to view
-./build/bin/flow_map lorenz
-```
 
 ### Controls
 
@@ -97,6 +88,17 @@ make clean  # Remove build directory
 ```
 
 Executables:
-- `build/bin/flow_map` - Interactive 3D field visualizer
+- `build/bin/FieldVisualizer` - Interactive 3D field visualizer
 - `build/bin/single_point_henon` - Single trajectory tracer
 - `build/bin/henon_ply_creator` - PLY export utility
+
+### Usage
+The `FieldVisualizer` executable can be run with an optional argument to select the map.
+
+```bash
+# Run with the default map (Henon)
+./build/bin/FieldVisualizer
+
+# Specify a map to view
+./build/bin/FieldVisualizer lorenz
+```
