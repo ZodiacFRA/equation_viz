@@ -6,12 +6,6 @@ This repository provides tools for exploring strange attractors, including the H
 
 The main application is an interactive, real-time visualizer for exploring attractor flow fields.
 
-### Features
-- **Multiple Maps**: Supports the Hénon map and Lorenz attractor.
-- **Interactive Camera**: Full orbital camera controls.
-- **Live Parameter Editing**: Interactively modify map parameters and visualization settings (resolution, iterations).
-- **Screenshot Capture**: Save the current view to a PNG file.
-
 ### Usage
 The `flow_map` executable can be run with an optional argument to select the map.
 

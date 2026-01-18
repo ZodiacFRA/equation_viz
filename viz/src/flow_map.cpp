@@ -88,11 +88,10 @@ int main(int argc, char** argv) {
             return 0;
         }
     }
-    
     std::unique_ptr<IteratedMap> map;
-    if (mapName == "henon" || mapName == "henon_map") {
+    if (mapName == "henon") {
         map = std::make_unique<HenonMap>();
-    } else if (mapName == "lorenz" || mapName == "lorenz_map") {
+    } else if (mapName == "lorenz") {
         map = std::make_unique<LorenzMap>();
     } else {
         map = std::make_unique<HenonMap>();  // Default
